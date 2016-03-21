@@ -3,7 +3,8 @@ package com.example.aaron.draw;
 import android.graphics.Color;
 import android.view.View;
 import android.content.Context;
-import android.util.AttributeSet;import android.graphics.Bitmap;
+import android.util.AttributeSet;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -11,6 +12,10 @@ import android.view.MotionEvent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.TypedValue;
+
+import java.util.LinkedList;
+import java.util.Stack;
+
 
 /**
  * Created by aaron on 3/11/16.
@@ -31,10 +36,14 @@ public class DrawingView extends View {
     private float brushSize, lastBrushSize;
     private boolean erase=false;
 
-
+    private Stack<Path> paths; //paths are pushed into the stack
+    private LinkedList<Path> undoPaths; //paths that are popped from the stack are added to undoPaths
+    
     public DrawingView(Context context, AttributeSet attrs){
         super(context, attrs);
         setupDrawing();
+        paths = new Stack<>();
+        undoPaths = new LinkedList<>();
     }
 
     private void setupDrawing(){
@@ -75,6 +84,11 @@ public class DrawingView extends View {
 //draw view
     }
 
+    /**
+     * Detects a user's touch which draws on the screen
+     * @param event actions in which the users touches the screen
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
@@ -98,7 +112,6 @@ public class DrawingView extends View {
 
         invalidate();
         return true;
-//detect user touch
     }
 
     public void setColor(String newColor){
@@ -135,5 +148,9 @@ public class DrawingView extends View {
     public void startNew(){
         drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR);
         invalidate();
+    }
+
+    public void OnClickUndo(){
+
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import java.util.UUID;
@@ -19,6 +20,7 @@ public class MainActivity extends Activity implements OnClickListener{
     private DrawingView drawView;
     private float smallBrush, mediumBrush, largeBrush;
     private ImageButton currPaint, drawBtn, eraseBtn, newBtn, saveBtn;
+    private Button UndoButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,9 @@ public class MainActivity extends Activity implements OnClickListener{
 
         saveBtn = (ImageButton)findViewById(R.id.save_btn);
         saveBtn.setOnClickListener(this);
+
+        UndoButton = (Button) findViewById(R.id.Undo_Button);
+        UndoButton.setOnClickListener(this);
     }
 
     public void paintClicked(View view){
@@ -56,7 +61,7 @@ public class MainActivity extends Activity implements OnClickListener{
             ImageButton imgView = (ImageButton)view;
             String color = view.getTag().toString();
             drawView.setColor(color);
-//update color
+            //update color
             imgView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.paint_pressed, null));
             currPaint.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.paint_pressed, null));
             currPaint=(ImageButton)view;
@@ -193,5 +198,10 @@ public class MainActivity extends Activity implements OnClickListener{
             //save drawing
         }
 //respond to clicks
+
+        //TODO: implement undo button
+        else if(view.getId() == R.id.Undo_Button) {
+            Toast.makeText(this, "Undo Button Pressed", Toast.LENGTH_SHORT).show();
+        }
     }
 }

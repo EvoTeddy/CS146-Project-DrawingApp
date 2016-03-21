@@ -12,6 +12,17 @@
         android:layout_gravity="center"
         android:orientation="horizontal" >
 
+        <!-- The Undo Button
+         TODO: find a picture for undo button-->
+        <!-- delete android:text after finding picture -->
+        <Button
+            android:id="@+id/Undo_Button"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text="Undo"
+            android:contentDescription="Undo Button"/>
+
+        <!-- Make another button for multiply/redo ? -->
         <ImageButton
             android:id="@+id/new_btn"
             android:layout_width="wrap_content"
