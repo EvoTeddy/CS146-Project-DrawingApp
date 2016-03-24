@@ -12,16 +12,19 @@ import android.view.MotionEvent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.TypedValue;
+import android.widget.Toast;
 
 import java.util.LinkedList;
-import java.util.Stack;
+import java.util.ArrayList;
 
 
 /**
  * Created by aaron on 3/11/16.
+ * DrawingView class is a custom View
+ * for the drawing functions in which to take place.
  */
-public class DrawingView extends View {
-
+public class DrawingView extends View
+{
     //drawing path
     private Path drawPath;
     //drawing and canvas paint
@@ -36,23 +39,32 @@ public class DrawingView extends View {
     private float brushSize, lastBrushSize;
     private boolean erase=false;
 
-    private Stack<Path> paths; //paths are pushed into the stack
+    private ArrayList<Path> paths; //paths are pushed into the stack
     private LinkedList<Path> undoPaths; //paths that are popped from the stack are added to undoPaths
     
-    public DrawingView(Context context, AttributeSet attrs){
+    public DrawingView(Context context, AttributeSet attrs)
+    {
         super(context, attrs);
         setupDrawing();
-        paths = new Stack<>();
-        undoPaths = new LinkedList<>();
+
     }
 
-    private void setupDrawing(){
+    /**
+     * setupDrawing() method
+     *    initializes all variables for drawing
+     */
+    private void setupDrawing()
+    {
         brushSize = getResources().getInteger(R.integer.medium_size);
         lastBrushSize = brushSize;
 
+        /**
+         * instantiate new Path and Paint objects
+         * */
         drawPath = new Path();
         drawPaint = new Paint();
 
+        //set the initial color
         drawPaint.setColor(paintColor);
 
         drawPaint.setAntiAlias(true);
@@ -64,6 +76,9 @@ public class DrawingView extends View {
         drawPaint.setStrokeWidth(brushSize);
 
         canvasPaint = new Paint(Paint.DITHER_FLAG);
+
+        paths = new ArrayList<>();
+        undoPaths = new LinkedList<>();
 //get drawing area setup for interaction
     }
 
@@ -77,11 +92,19 @@ public class DrawingView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(Canvas canvas)
+    {
 
         canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
-        canvas.drawPath(drawPath, drawPaint);
+//        canvas.drawPath(drawPath, drawPaint);
 //draw view
+        for(Path p : paths)
+        {
+            canvas.drawPath(p, drawPaint);
+
+        }
+
+        canvas.drawPath(drawPath, drawPaint);
     }
 
     /**
@@ -95,7 +118,8 @@ public class DrawingView extends View {
         float touchX = event.getX();
         float touchY = event.getY();
 
-        switch (event.getAction()) {
+        switch (event.getAction())
+        {
             case MotionEvent.ACTION_DOWN:
                 drawPath.moveTo(touchX, touchY);
                 break;
@@ -104,13 +128,18 @@ public class DrawingView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 drawCanvas.drawPath(drawPath, drawPaint);
+                //push the path onto the stack
+                if(paths.add(drawPath)){
+                    Toast.makeText(getContext(), "adding", Toast.LENGTH_SHORT).show();
+                }
+
                 drawPath.reset();
                 break;
             default:
                 return false;
         }
 
-        invalidate();
+        invalidate(); //calls implicitly onDraw()
         return true;
     }
 
@@ -150,7 +179,12 @@ public class DrawingView extends View {
         invalidate();
     }
 
-    public void OnClickUndo(){
-
+    public void OnClickUndo()
+    {
+        if(paths.size() != 0) {
+            Path path = paths.remove(paths.size() - 1);
+            undoPaths.add(path);
+            invalidate();
+        }
     }
 }

@@ -201,7 +201,8 @@ public class MainActivity extends Activity implements OnClickListener{
 
         //TODO: implement undo button
         else if(view.getId() == R.id.Undo_Button) {
-            Toast.makeText(this, "Undo Button Pressed", Toast.LENGTH_SHORT).show();
+            // calls onclickundo
+            drawView.OnClickUndo();
         }
     }
 }
