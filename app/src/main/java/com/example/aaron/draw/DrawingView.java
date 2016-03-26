@@ -17,6 +17,10 @@ import android.widget.Toast;
 import java.util.LinkedList;
 import java.util.ArrayList;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
 /**
  * Created by aaron on 3/11/16.
  * DrawingView class is a custom View
@@ -24,6 +28,7 @@ import java.util.ArrayList;
  */
 public class DrawingView extends View
 {
+<<<<<<< HEAD
     /**
      * instance variables:
      * Path drawPath
@@ -36,6 +41,8 @@ public class DrawingView extends View
      * ArrayList<Path> paths
      * LinkedList<Path> undonePaths
      */
+=======
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
     //drawing path
     private Path drawPath;
     //drawing and canvas paint
@@ -51,9 +58,14 @@ public class DrawingView extends View
     private boolean erase=false;
 
     private ArrayList<Path> paths; //paths are pushed into the stack
+<<<<<<< HEAD
     private LinkedList<Path> undonePaths; //paths that are popped from the stack are added to undoPaths
 
     //CONSTRUCTOR
+=======
+    private LinkedList<Path> undoPaths; //paths that are popped from the stack are added to undoPaths
+    
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
     public DrawingView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
@@ -62,13 +74,19 @@ public class DrawingView extends View
     }
 
     /**
+<<<<<<< HEAD
      * initializes all variables for drawing
+=======
+     * setupDrawing() method
+     *    initializes all variables for drawing
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
      */
     private void setupDrawing()
     {
         brushSize = getResources().getInteger(R.integer.medium_size);
         lastBrushSize = brushSize;
 
+<<<<<<< HEAD
         //instantiate new Path and Paint objects
         drawPath = new Path();
         drawPaint = new Paint();
@@ -77,6 +95,17 @@ public class DrawingView extends View
         drawPaint.setColor(paintColor);
 
         //set initial path properties
+=======
+        /**
+         * instantiate new Path and Paint objects
+         * */
+        drawPath = new Path();
+        drawPaint = new Paint();
+
+        //set the initial color
+        drawPaint.setColor(paintColor);
+
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
         drawPaint.setAntiAlias(true);
         drawPaint.setStrokeWidth(brushSize);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -84,6 +113,7 @@ public class DrawingView extends View
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
 
         drawPaint.setStrokeWidth(brushSize);
+<<<<<<< HEAD
         //instantiate the Paint object canvasPaint
         //Note:
         //definition of dithering:
@@ -111,12 +141,26 @@ public class DrawingView extends View
     protected void onSizeChanged(int w, int h, int oldw, int oldh)
     {
         //call superclass method from View
+=======
+
+        canvasPaint = new Paint(Paint.DITHER_FLAG);
+
+        paths = new ArrayList<>();
+        undoPaths = new LinkedList<>();
+//get drawing area setup for interaction
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
         super.onSizeChanged(w, h, oldw, oldh);
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
 //view given size
     }
 
+<<<<<<< HEAD
     /**
      * Each time the user draws using touch, View is invalidated,
      * causing onDraw() to execute
@@ -132,6 +176,17 @@ public class DrawingView extends View
 // canvas.drawPath(drawPath, drawPaint);
 //draw view
         for(Path p : paths) {
+=======
+    @Override
+    protected void onDraw(Canvas canvas)
+    {
+
+        canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
+//        canvas.drawPath(drawPath, drawPaint);
+//draw view
+        for(Path p : paths)
+        {
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
             canvas.drawPath(p, drawPaint);
 
         }
@@ -145,14 +200,20 @@ public class DrawingView extends View
      * @return
      */
     @Override
+<<<<<<< HEAD
     //TODO: fix the last case.
     public boolean onTouchEvent(MotionEvent event) {
         //detects user touch by location
+=======
+    public boolean onTouchEvent(MotionEvent event) {
+
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
         float touchX = event.getX();
         float touchY = event.getY();
 
         switch (event.getAction())
         {
+<<<<<<< HEAD
             //User touches the View.
             //Move to that position to start drawing.
             case MotionEvent.ACTION_DOWN:
@@ -170,6 +231,18 @@ public class DrawingView extends View
                 //push the path onto the stack
                 if(paths.add(drawPath))
                 {
+=======
+            case MotionEvent.ACTION_DOWN:
+                drawPath.moveTo(touchX, touchY);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                drawPath.lineTo(touchX, touchY);
+                break;
+            case MotionEvent.ACTION_UP:
+                drawCanvas.drawPath(drawPath, drawPaint);
+                //push the path onto the stack
+                if(paths.add(drawPath)){
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
                     Toast.makeText(getContext(), "adding", Toast.LENGTH_SHORT).show();
                 }
 
@@ -179,11 +252,15 @@ public class DrawingView extends View
                 return false;
         }
 
+<<<<<<< HEAD
         //after break from switch, invalidate View
+=======
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
         invalidate(); //calls implicitly onDraw()
         return true;
     }
 
+<<<<<<< HEAD
     /**
      * sets the new color
      * @param newColor the new color
@@ -195,6 +272,14 @@ public class DrawingView extends View
         //new color is set
         paintColor = Color.parseColor(newColor);
         drawPaint.setColor(paintColor);
+=======
+    public void setColor(String newColor){
+        invalidate();
+        paintColor = Color.parseColor(newColor);
+        drawPaint.setColor(paintColor);
+
+//set color
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
     }
 
     public void setBrushSize(float newSize){
@@ -229,7 +314,11 @@ public class DrawingView extends View
     {
         if(paths.size() != 0) {
             Path path = paths.remove(paths.size() - 1);
+<<<<<<< HEAD
             undonePaths.add(path);
+=======
+            undoPaths.add(path);
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
             invalidate();
         }
     }

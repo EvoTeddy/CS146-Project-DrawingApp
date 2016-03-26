@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 /**
  * MainActivity Class for background processing.
  * Inherits methods from Activity superclass.
@@ -51,13 +52,37 @@ public class MainActivity extends Activity implements OnClickListener{
         //store initial button to the currPaint button
         currPaint = (ImageButton)paintLayout.getChildAt(0);
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
+=======
+public class MainActivity extends Activity implements OnClickListener{
+
+    private DrawingView drawView;
+    private float smallBrush, mediumBrush, largeBrush;
+    private ImageButton currPaint, drawBtn, eraseBtn, newBtn, saveBtn;
+    private Button UndoButton;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+        drawView = (DrawingView)findViewById(R.id.drawing);
+
+        LinearLayout paintLayout = (LinearLayout)findViewById(R.id.paint_colors);
+        currPaint = (ImageButton)paintLayout.getChildAt(0);
+
+        currPaint.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.paint_pressed, null));
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
 
         smallBrush = getResources().getInteger(R.integer.small_size);
         mediumBrush = getResources().getInteger(R.integer.medium_size);
         largeBrush = getResources().getInteger(R.integer.large_size);
 
         drawBtn = (ImageButton)findViewById(R.id.draw_btn);
+<<<<<<< HEAD
         //sets up a click listener for this draw button
+=======
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
         drawBtn.setOnClickListener(this);
 
         eraseBtn = (ImageButton)findViewById(R.id.erase_btn);
@@ -73,6 +98,7 @@ public class MainActivity extends Activity implements OnClickListener{
         UndoButton.setOnClickListener(this);
     }
 
+<<<<<<< HEAD
     /**
      * Updates paint color to newly chosen color
      * Changes background ImageButton from unchosen to chosen
@@ -91,6 +117,17 @@ public class MainActivity extends Activity implements OnClickListener{
             //changes chosen button to darker background
             imgView.setImageDrawable(getResources().getDrawable(R.drawable.paint_pressed));
             currPaint.setImageDrawable(getResources().getDrawable(R.drawable.paint));
+=======
+    public void paintClicked(View view){
+
+        if(view!=currPaint){
+            ImageButton imgView = (ImageButton)view;
+            String color = view.getTag().toString();
+            drawView.setColor(color);
+            //update color
+            imgView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.paint_pressed, null));
+            currPaint.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.paint_pressed, null));
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
             currPaint=(ImageButton)view;
             drawView.setErase(false);
             drawView.setBrushSize(drawView.getLastBrushSize());
@@ -98,6 +135,7 @@ public class MainActivity extends Activity implements OnClickListener{
         //use chosen color
     }
 
+<<<<<<< HEAD
     /**
      * Checks for clicks on the
      * draw, new, save, and erase buttons
@@ -110,6 +148,13 @@ public class MainActivity extends Activity implements OnClickListener{
         if(view.getId()==R.id.draw_btn)
         {
             //draw button clicked, so set up dialog of three button sizes
+=======
+    @Override
+    public void onClick(View view){
+
+        if(view.getId()==R.id.draw_btn){
+
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
             final Dialog brushDialog = new Dialog(this);
             brushDialog.setTitle("Brush size:");
 
@@ -147,8 +192,13 @@ public class MainActivity extends Activity implements OnClickListener{
                 }
             });
             brushDialog.show();
+<<<<<<< HEAD
         }
         //for clicked erase button
+=======
+            //draw button clicked
+        }
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
         else if(view.getId()==R.id.erase_btn){
             final Dialog brushDialog = new Dialog(this);
             brushDialog.setTitle("Eraser size:");
@@ -182,7 +232,10 @@ public class MainActivity extends Activity implements OnClickListener{
             });
             brushDialog.show();
         }
+<<<<<<< HEAD
         //for clicked New button
+=======
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
         else if(view.getId()==R.id.new_btn){
             AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
             newDialog.setTitle("New drawing");
@@ -201,6 +254,7 @@ public class MainActivity extends Activity implements OnClickListener{
             newDialog.show();
             //new button
         }
+<<<<<<< HEAD
         //for clicked Save button
         else if(view.getId()==R.id.save_btn)
         {
@@ -238,6 +292,22 @@ public class MainActivity extends Activity implements OnClickListener{
                     dialog.cancel();
                     //improperly placed code:
                    /* String imgSaved = MediaStore.Images.Media.insertImage(
+=======
+        else if(view.getId()==R.id.save_btn){
+
+            AlertDialog.Builder saveDialog = new AlertDialog.Builder(this);
+            saveDialog.setTitle("Save drawing");
+            saveDialog.setMessage("Save drawing to device Gallery?");
+            drawView.setDrawingCacheEnabled(true);
+            saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which){
+                    //save drawing
+                }
+            });
+            saveDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    String imgSaved = MediaStore.Images.Media.insertImage(
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
                             getContentResolver(), drawView.getDrawingCache(),
                             UUID.randomUUID().toString() + ".png", "drawing");
                     if (imgSaved != null) {
@@ -248,6 +318,7 @@ public class MainActivity extends Activity implements OnClickListener{
                         Toast unsavedToast = Toast.makeText(getApplicationContext(),
                                 "Oops! Image could not be saved.", Toast.LENGTH_SHORT);
                         unsavedToast.show();
+<<<<<<< HEAD
                     }*/
                 }
             });
@@ -257,6 +328,17 @@ public class MainActivity extends Activity implements OnClickListener{
 //respond to clicks
 
         //for clicked UNDO button
+=======
+                    }
+                }
+            });
+            drawView.destroyDrawingCache();
+            saveDialog.show();
+            //save drawing
+        }
+//respond to clicks
+
+>>>>>>> 093e371b80e8f3185d196f052726cc4e6c65a799
         //TODO: implement undo button
         else if(view.getId() == R.id.Undo_Button) {
             // calls onclickundo
